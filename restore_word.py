@@ -9,6 +9,8 @@ content = content.lower()
 content = content.replace("hor' mxhoryiq", "horyiq mxhoryiq")
 content = content.replace("hor' mxhornangx", "hornangx mxhornangx")
 content = content.replace("'deih", "keoiqdeih")
+content = content.replace("siur-yvnx-binh", "siurbinh")
+content = content.replace("zip-gwaan-saangj", "zipsaangj")
 
 # 划分单词
 words = content.split()
