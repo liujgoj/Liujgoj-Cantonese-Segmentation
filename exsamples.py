@@ -20,4 +20,8 @@ sentences = [
     # 有冇搞錯？
     "Geirsix ceotjfaat?",
     # 幾時出發？
+    "yatj, yih, saamj, sei, ngq",
+    # 基數1，2，3，4，5
+    "daihyatj, daihyih, daihsaph",
+    # 序數第一，第二，第十
 ]
