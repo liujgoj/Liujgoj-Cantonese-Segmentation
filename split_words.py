@@ -6,10 +6,15 @@ with open('1.txt', 'r', encoding='UTF-8') as f:
 content = content.lower()
 
 # 替换字符串
+# 將“可唔可以”替換爲“”可以唔可以”
 content = content.replace("hor' mxhoryiq", "horyiq mxhoryiq")
+# 將“可唔可能”替換爲“可能唔可能”
 content = content.replace("hor' mxhornangx", "hornangx mxhornangx")
+# 將縮寫“'哋”替換爲“佢哋”
 content = content.replace("'deih", "keoiqdeih")
+# 將“小完便”替換爲“小便”
 content = content.replace("siur-yvnx-binh", "siurbinh")
+# 將“接慣生”替換爲“接生”
 content = content.replace("zip-gwaan-saangj", "zipsaangj")
 
 # 划分单词
@@ -38,21 +43,26 @@ for word in words:
     word = re.sub(r'\d', '', word)
     word = re.sub(r'[^\w\-]', '', word)
 
-    # 删除特定的字符串
-    word = re.sub(r'^(aa-|louq-|daaih-|sai-|siur-)', '', word)
-    word = re.sub(r'(-saangj|-yij|-goj|-goh|-baak|-sukj|-hingj|-zungr|-taair|-zair|-neoiq|-neoir|-maaj|-noengr|-gaaj|-gei|-sih|-yex|-fur|-zer|-zej|-gungj|-ciux|-satj|-wongx|-guj|-samr|-zikh|-siu)$', '', word)
+    # 删除特定的字符串(前綴同後綴)
+    word = re.sub(r'^(aa-|louq-|daaih-|sai-|siur-|feix-)', '', word)
+    word = re.sub(r'(-yix|-zeh|-soex|-foj|-saangj|-yij|-goj|-goh|-baak|-sukj|-hingj|-zungr|-taair|-zair|-neoiq|-neoir|-maaj|-noengr|-gaaj|-gei|-sih|-yex|-fur|-zer|-zej|-gungj|-ciux|-satj|-wongx|-guj|-samr|-zikh|-siu)$', '', word)
 
     # 处理特殊情况
+    # 將“冇事冇幹”等替換爲“冇 事幹”
     if re.match(r'^(mouq)-([a-z]+)-(mouq)-([a-z]+)$', word):
         word = re.sub(r'^(mouq)-', 'mouq ', word)
         word = re.sub(r'-(mouq)-', '', word)
+    # 將“有忠有義”等替換爲“有 忠義”
     elif re.match(r'^(yauq)-([a-z]+)-(yauq)-([a-z]+)$', word):
         word = re.sub(r'^(yauq)-', 'yauq ', word)
         word = re.sub(r'-(yauq)-', '', word)
+    # 將單詞中間嘅“ganr”等時態同埋中間插入嘅單詞刪除
     elif re.match(r'^[a-z]+(ganr|zor|zvh|gwo)(-[a-z]+)+-[a-z]+$', word):
         word = re.sub(r'(ganr|zor|zvh|gwo)(-[a-z]+)+-', '', word)
+    # 將單詞中間嘅“ganr”等時態刪除
     elif re.match(r'^[a-z]+(ganr|zor|zvh|gwo)-[a-z]+$', word):
         word = re.sub(r'(ganr|zor|zvh|gwo)-', '', word)
+    # 將插入單詞中間嘅音節同埋單詞刪除
     elif re.match(r'^[a-z]+(-[a-z]+)+-[a-z]+$', word) and word.count('-') >= 2:
         word = re.sub(r'(-[a-z]+)+-', '', word)
 
