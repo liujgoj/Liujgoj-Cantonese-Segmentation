@@ -31,13 +31,12 @@ import re
 with open("2.txt", "r", encoding="utf-8") as file:
     content = file.read()
 
-# 按照空格划分单词
-words = content.split()
+# 按照空格和连字符“-”以外所有的标点符号划分单词
+words = re.findall(r'[\w\-]+', content)
 
-unique_words = set()  # 用于存储唯一的单词
-
-for word in words:
-
+# 对每个单词进行处理
+for i in range(len(words)):
+    word = words[i]
 
     # 去掉所有的数字，去掉除了连字符“-”以外所有的标点符号
     word = re.sub(r'\d', '', word)
@@ -66,10 +65,83 @@ for word in words:
     elif re.match(r'^[a-z]+(-[a-z]+)+-[a-z]+$', word) and word.count('-') >= 2:
         word = re.sub(r'(-[a-z]+)+-', '', word)
 
-    # 删除重复的单词，只保留唯一的一个
-    unique_words.add(word)
+    # 将处理后的单词保存到列表中
+    words[i] = word.strip()
 
-# 将处理后的单词写入文件2.txt，每行一个单词
+# 将处理后的单词写入文件3.txt，每行一个单词
 with open("3.txt", "w", encoding="utf-8") as file:
-    for unique_word in unique_words:
-        file.write(unique_word + "\n")
+    for word in words:
+        file.write(word + "\n")
+
+import openpyxl
+import re
+
+# 读取aspect.txt文件，获取其中的单词列表
+with open("aspect.txt", "r", encoding="utf-8") as file:
+    aspect_words = file.read().split()
+
+# 读取文件3.txt
+with open("3.txt", "r", encoding="utf-8") as file:
+    content = file.read()
+
+# 按照空格划分单词
+words = content.split()
+
+# 处理单词
+for i in range(len(words)):
+    word = words[i]
+
+    # 检查单词是否在aspect.txt文件中
+    if word in aspect_words:
+        continue
+
+    # 根据匹配规则处理单词
+    elif re.match(r'^[a-z]+ganr$', word):
+        word = re.sub(r'ganr', '', word)
+    elif re.match(r'^[a-z]+zor$', word):
+        word = re.sub(r'zor', '', word)
+    elif re.match(r'^[a-z]+zvh$', word):
+        word = re.sub(r'zvh', '', word)
+    elif re.match(r'^[a-z]+gwo$', word):
+        word = re.sub(r'gwo', '', word)
+
+    # 将处理后的单词保存回列表中
+    words[i] = word
+
+# 统计单词数量和频率
+word_counts = {}
+for word in words:
+    if word not in aspect_words:
+        if word in word_counts:
+            word_counts[word] += 1
+        else:
+            word_counts[word] = 1
+
+total_words = len(words)
+word_freqs = {word: count / total_words for word, count in word_counts.items()}
+
+# 按照词频和词频数量排序
+sorted_word_freqs = sorted(word_freqs.items(), key=lambda x: (x[1], word_counts[x[0]]), reverse=True)
+
+# 将结果写入Excel文件中
+workbook = openpyxl.Workbook()
+worksheet = workbook.active
+worksheet.title = "Word Frequencies"
+
+# 写入表头
+worksheet.cell(row=1, column=1, value="Word")
+worksheet.cell(row=1, column=2, value="Count")
+worksheet.cell(row=1, column=3, value="Frequency")
+
+# 写入数据
+for i, (word, freq) in enumerate(sorted_word_freqs):
+    worksheet.cell(row=i+2, column=1, value=word)
+    worksheet.cell(row=i+2, column=2, value=word_counts[word])
+    worksheet.cell(row=i+2, column=3, value=freq)
+
+# 写入总单词数量
+worksheet.cell(row=len(sorted_word_freqs)+2, column=1, value="Total Words")
+worksheet.cell(row=len(sorted_word_freqs)+2, column=2, value=total_words)
+
+# 保存Excel文件
+workbook.save(filename="4.xlsx")
