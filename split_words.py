@@ -16,7 +16,8 @@ content = content.replace("'deih", "keoiqdeih")
 content = content.replace("siur-yvnx-binh", "siurbinh")
 # 將“接慣生”替換爲“接生”
 content = content.replace("zip-gwaan-saangj", "zipsaangj")
-
+# 將“bin-ganr”替換爲“bin”
+content = content.replace("bin-ganr", "bin")
 # 划分单词
 words = content.split()
 
