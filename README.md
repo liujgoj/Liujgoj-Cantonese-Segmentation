@@ -1,5 +1,6 @@
 # Segmentation for Liujgoj Cantonese
 This is a segmentation for Liujgoj Cantonese(Yvthyvq).  呢個係粵語分詞器，適用於粵語嘅溜歌版本。
+
 本分詞器split_words.py嘅目的係用於詞典嘅製作。
 
 * 對性名進行咗前綴、中綴嘅去除；
