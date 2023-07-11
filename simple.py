@@ -5,7 +5,7 @@ import xlsxwriter
 with open('1.txt', encoding='utf-8') as f:
     text = f.read()
 
-# 按照标点符号和空格分割 
+# 按照标点符号（撇號同連字符除外）和空格分割 
 words = re.split('[^\w\'-]+', text)
 
 # 全部小写
